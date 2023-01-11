@@ -1,0 +1,13 @@
+[package]
+name = "barreleye-driver"
+description = "Barreleye driver for Rust."
+repository = "https://github.com/barreleye/barreleye.rs"
+documentation = "https://docs.rs/barreleye-driver"
+homepage = "https://barreleye.com"
+version = "0.0.1"
+license = "Apache-2.0"
+edition = "2021"
+readme = "README.md"
+keywords = ["barreleye"]
+
+[dependencies]
