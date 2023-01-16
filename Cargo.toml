@@ -1,8 +1,8 @@
 [package]
-name = "barreleye-driver"
+name = "barreleye-client"
 description = "Barreleye driver for Rust."
 repository = "https://github.com/barreleye/barreleye.rs"
-documentation = "https://docs.rs/barreleye-driver"
+documentation = "https://docs.rs/barreleye-client"
 homepage = "https://barreleye.com"
 version = "0.0.1"
 license = "Apache-2.0"
@@ -11,3 +11,10 @@ readme = "README.md"
 keywords = ["barreleye"]
 
 [dependencies]
+eyre = "0.6.8"
+derive_more = "0.99.17"
+serde_json = "1.0.91"
+serde = { version = "1.0.152", features = ["derive"] }
+tokio = { version = "1.24.1", features = ["full"] }
+reqwest = { version = "0.11.13", features = ["rustls-tls", "json"] }
+chrono = { version = "0.4.23", default-features = false, features = ["clock", "std", "serde"] }
