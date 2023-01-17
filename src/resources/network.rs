@@ -43,7 +43,7 @@ impl Network {
 		blockchain: Blockchain,
 		chain_id: u64,
 		block_time_ms: u64,
-		rpc_endpoints: Vec<String>,
+		rpc_endpoints: Vec<&str>,
 		rps: u32,
 	) -> Response<Self> {
 		client
