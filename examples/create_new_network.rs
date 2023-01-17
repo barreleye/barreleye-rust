@@ -11,10 +11,9 @@ async fn main() {
 	let rpc_endpoint = "http://127.0.0.1:8545";
 	let network = Network::create(
 		&client,
-		"Ethereum",         // name
-		"Ethereum",         // tag
-		Env::Mainnet,       // env
-		Blockchain::Evm,    // blockchain
+		"Ethereum",
+		Env::Mainnet,
+		Blockchain::Evm,
 		1,                  // chain id
 		12_000,             // block time in milliseconds
 		vec![rpc_endpoint], // rpc endpoints

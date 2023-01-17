@@ -29,24 +29,22 @@ async fn main() {
 	let api_key = Some("7f9e9182-122d-45e1-b4be-d73fc99e9bc9");
 	let client = Barreleye::new(url, api_key);
 
-	// Create a new network
+	// Create a new network resource
 	let rpc_endpoint = "http://127.0.0.1:8545";
 	let network = Network::create(
 		&client,
-		"Ethereum",         // name
-		"Ethereum",         // tag
-		Env::Mainnet,       // env
-		Blockchain::Evm,    // blockchain
+		"Ethereum",
+		Env::Mainnet,
+		Blockchain::Evm,
 		1,                  // chain id
 		12_000,             // block time in milliseconds
 		vec![rpc_endpoint], // rpc endpoints
-		100,                // rate limiter (requests per second)
+		100,                // indexing rate limiter (requests per second)
 	)
 	.await;
 
 	println!("{:?}", network);
 }
-
 ```
 
 Get info about an address:

@@ -9,7 +9,6 @@ use crate::{Barreleye, Blockchain, Endpoint, Env, Response};
 #[serde(rename_all = "camelCase")]
 pub struct NetworkData {
 	name: Option<String>,
-	tag: Option<String>,
 	env: Option<Env>,
 	blockchain: Option<Blockchain>,
 	chain_id: Option<u64>,
@@ -23,7 +22,6 @@ pub struct NetworkData {
 #[serde(rename_all = "camelCase")]
 pub struct Network {
 	name: String,
-	tag: String,
 	env: Env,
 	blockchain: Blockchain,
 	chain_id: u64,
@@ -38,7 +36,6 @@ impl Network {
 	pub async fn create(
 		client: &Barreleye,
 		name: &str,
-		tag: &str,
 		env: Env,
 		blockchain: Blockchain,
 		chain_id: u64,
@@ -52,7 +49,6 @@ impl Network {
 				Endpoint::Networks,
 				json!({
 					"name": name.to_string(),
-					"tag": tag.to_string(),
 					"env": env,
 					"blockchain": blockchain,
 					"chainId": chain_id,
