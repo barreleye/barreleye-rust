@@ -1,10 +1,9 @@
 use chrono::NaiveDateTime as DateTime;
-use eyre::Result;
 use reqwest::Method;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 
-use crate::{Barreleye, Blockchain, Endpoint, Env};
+use crate::{Barreleye, Blockchain, Endpoint, Env, Response};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -46,9 +45,9 @@ impl Network {
 		block_time_ms: u64,
 		rpc_endpoints: Vec<String>,
 		rps: u32,
-	) -> Result<Self> {
-		Ok(client
-			.body_request(
+	) -> Response<Self> {
+		client
+			.post::<Self>(
 				Method::POST,
 				Endpoint::Networks,
 				json!({
@@ -62,40 +61,22 @@ impl Network {
 					"rps": rps,
 				}),
 			)
-			.await?
-			.json::<Self>()
-			.await?)
+			.await
 	}
 
-	pub async fn list(client: &Barreleye) -> Result<Vec<Self>> {
-		Ok(client
-			.body_request(Method::GET, Endpoint::Networks, json!(null))
-			.await?
-			.json::<Vec<Self>>()
-			.await?)
+	pub async fn list(client: &Barreleye) -> Response<Vec<Self>> {
+		client.get::<Vec<Self>>(Endpoint::Networks, &[]).await
 	}
 
-	pub async fn get(client: &Barreleye, id: &str) -> Result<Self> {
-		Ok(client
-			.body_request(Method::GET, Endpoint::Network(id.to_string()), json!(null))
-			.await?
-			.json::<Self>()
-			.await?)
+	pub async fn get(client: &Barreleye, id: &str) -> Response<Self> {
+		client.get::<Self>(Endpoint::Network(id.to_string()), &[]).await
 	}
 
-	pub async fn update(client: &Barreleye, id: &str, data: NetworkData) -> Result<()> {
-		Ok(client
-			.body_request(Method::PUT, Endpoint::Network(id.to_string()), json!(data))
-			.await?
-			.json::<()>()
-			.await?)
+	pub async fn update(client: &Barreleye, id: &str, data: NetworkData) -> Response<()> {
+		client.post::<()>(Method::PUT, Endpoint::Network(id.to_string()), json!(data)).await
 	}
 
-	pub async fn delete(client: &Barreleye, id: &str) -> Result<()> {
-		Ok(client
-			.body_request(Method::DELETE, Endpoint::Network(id.to_string()), json!(null))
-			.await?
-			.json::<()>()
-			.await?)
+	pub async fn delete(client: &Barreleye, id: &str) -> Response<()> {
+		client.post::<()>(Method::DELETE, Endpoint::Network(id.to_string()), json!(null)).await
 	}
 }

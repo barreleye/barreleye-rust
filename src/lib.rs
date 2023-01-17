@@ -1,26 +1,15 @@
 use derive_more::Display;
-use eyre::Result;
-use reqwest::{Client, Method, RequestBuilder, Response};
-use serde::{Deserialize, Serialize};
+use reqwest::{Client, Method, RequestBuilder};
+use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use serde_json::Value as JsonValue;
 
-pub use address::Address;
-pub use heartbeat::Heartbeat;
-pub use info::Info;
-pub use key::Key;
-pub use label::Label;
-pub use network::Network;
-pub use stats::Stats;
-pub use upstream::Upstream;
+pub use error::{Error, RequestError};
+pub use resources::*;
 
-mod address;
-mod heartbeat;
-mod info;
-mod key;
-mod label;
-mod network;
-mod stats;
-mod upstream;
+mod error;
+mod resources;
+
+pub type Response<T> = Result<T, Error>;
 
 #[derive(Display, Debug, Clone, PartialEq, Eq)]
 enum Endpoint {
@@ -78,7 +67,7 @@ pub struct Barreleye {
 impl Barreleye {
 	pub fn new(url: &str, api_key: Option<&str>) -> Self {
 		Self {
-			version: "0".to_string(),
+			version: "v0".to_string(),
 			url: url.trim_end_matches('/').to_string(),
 			api_key: api_key.map(|v| v.to_owned()),
 		}
@@ -88,35 +77,40 @@ impl Barreleye {
 		endpoint != Endpoint::Info && endpoint != Endpoint::Upstream
 	}
 
-	async fn get_request<T: Serialize>(
+	async fn get<T: DeserializeOwned>(
 		&self,
 		endpoint: Endpoint,
-		query: Option<T>,
-	) -> Result<Response> {
-		let req = self.request_builder(Method::GET, endpoint);
-		Ok(req.query(&query).send().await?)
+		query: &[(&str, &str)],
+	) -> Response<T> {
+		self.req::<T>(self.make(Method::GET, endpoint).query(&query)).await
 	}
 
-	async fn body_request(
+	async fn post<T: DeserializeOwned>(
 		&self,
 		method: Method,
 		endpoint: Endpoint,
 		body: JsonValue,
-	) -> Result<Response> {
-		let req = self.request_builder(method, endpoint);
-		Ok(req.json(&body).send().await.unwrap())
+	) -> Response<T> {
+		self.req::<T>(self.make(method, endpoint).json(&body)).await
 	}
 
-	fn request_builder(&self, method: Method, endpoint: Endpoint) -> RequestBuilder {
-		let client = Client::new();
-
-		let mut req =
-			client.request(method, format!("{}/v{}/{}", self.url, self.version, endpoint));
+	fn make(&self, method: Method, endpoint: Endpoint) -> RequestBuilder {
+		let url = format!("{}/{}/{}", self.url, self.version, endpoint);
+		let mut req = Client::new().request(method, url);
 
 		if self.is_auth_request(endpoint) {
 			req = req.bearer_auth(self.api_key.clone().unwrap());
 		}
 
 		req
+	}
+
+	async fn req<T: DeserializeOwned>(&self, req: RequestBuilder) -> Response<T> {
+		let res = req.send().await.map_err(|_| Error::Unavailable)?;
+		if res.status().is_success() {
+			Ok(res.json::<T>().await?)
+		} else {
+			Err(Error::Barreleye(res.json::<RequestError>().await?))
+		}
 	}
 }

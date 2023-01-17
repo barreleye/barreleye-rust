@@ -1,7 +1,6 @@
-use eyre::Result;
 use serde::{Deserialize, Serialize};
 
-use crate::{Barreleye, Endpoint};
+use crate::{Barreleye, Endpoint, Response};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -16,7 +15,7 @@ pub struct Asset {
 pub struct Heartbeat {}
 
 impl Heartbeat {
-	pub async fn get(client: &Barreleye) -> Result<bool> {
-		Ok(client.get_request(Endpoint::Heartbeat, Option::<()>::None).await?.status().is_success())
+	pub async fn get(client: &Barreleye) -> Response<()> {
+		client.get::<()>(Endpoint::Heartbeat, &[]).await
 	}
 }

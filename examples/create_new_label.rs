@@ -8,6 +8,6 @@ async fn main() {
 	let client = Barreleye::new(url, api_key);
 
 	// Create a new label
-	let label = Label::create(&client, "Label #1", "Sample label").await.unwrap();
+	let label = Label::create(&client, "Label #1", "Sample label").await;
 	println!("{:?}", label);
 }

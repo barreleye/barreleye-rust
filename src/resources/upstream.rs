@@ -1,7 +1,6 @@
-use eyre::Result;
 use serde::{Deserialize, Serialize};
 
-use crate::{Barreleye, Endpoint};
+use crate::{Barreleye, Endpoint, Response};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -44,17 +43,15 @@ pub struct Upstream {
 }
 
 impl Upstream {
-	pub async fn get(client: &Barreleye, address: &str, detailed: Option<bool>) -> Result<Self> {
-		Ok(client
-			.get_request(
+	pub async fn get(client: &Barreleye, address: &str, detailed: Option<bool>) -> Response<Self> {
+		client
+			.get::<Self>(
 				Endpoint::Upstream,
-				Some([
+				&[
 					("address", address),
 					("detailed", if detailed.unwrap_or(false) { "true" } else { "false" }),
-				]),
+				],
 			)
-			.await?
-			.json::<Self>()
-			.await?)
+			.await
 	}
 }

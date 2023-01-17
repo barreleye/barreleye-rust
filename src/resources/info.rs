@@ -1,7 +1,6 @@
-use eyre::Result;
 use serde::{Deserialize, Serialize};
 
-use crate::{Barreleye, Endpoint};
+use crate::{Barreleye, Endpoint, Response};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -35,11 +34,7 @@ pub struct Info {
 }
 
 impl Info {
-	pub async fn get(client: &Barreleye, address: &str) -> Result<Self> {
-		Ok(client
-			.get_request(Endpoint::Info, Some([("address", address)]))
-			.await?
-			.json::<Self>()
-			.await?)
+	pub async fn get(client: &Barreleye, address: &str) -> Response<Self> {
+		client.get::<Self>(Endpoint::Info, &[("address", address)]).await
 	}
 }

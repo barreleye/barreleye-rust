@@ -1,4 +1,4 @@
-use barreleye_client::{Barreleye, Info};
+use barreleye_client::{Barreleye, Error, Info};
 
 #[tokio::main]
 async fn main() {
@@ -8,6 +8,9 @@ async fn main() {
 	let client = Barreleye::new(url, api_key);
 
 	// Get info about the address
-	let info = Info::get(&client, "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa").await.unwrap();
-	println!("{:?}", info);
+	match Info::get(&client, "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa").await {
+		Ok(info) => println!("{:?}", info),
+		Err(Error::Unavailable) => println!("Is Barreleye server running?"),
+		Err(e) => println!("Error: {e}"),
+	}
 }

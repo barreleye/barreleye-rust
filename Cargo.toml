@@ -11,9 +11,9 @@ readme = "README.md"
 keywords = ["barreleye"]
 
 [dependencies]
-eyre = "0.6.8"
 derive_more = "0.99.17"
 serde_json = "1.0.91"
+serde_derive = "1.0.152"
 serde = { version = "1.0.152", features = ["derive"] }
 tokio = { version = "1.24.1", features = ["full"] }
 reqwest = { version = "0.11.13", features = ["rustls-tls", "json"] }
