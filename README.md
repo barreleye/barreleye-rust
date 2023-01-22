@@ -7,7 +7,8 @@ The official Rust driver for Barreleye.
 [![Github Actions](https://img.shields.io/github/actions/workflow/status/barreleye/barreleye.rs/tests.yml?style=flat-square)](https://github.com/barreleye/barreleye.rs/actions)
 [![Dependency Status](https://deps.rs/repo/github/barreleye/barreleye.rs/status.svg?style=flat-square)](https://deps.rs/repo/github/barreleye/barreleye.rs)
 [![Crates.io](https://img.shields.io/crates/v/barreleye-client?color=brightgreen&style=flat-square)](https://crates.io/crates/barreleye-client)
-[![License](https://img.shields.io/badge/license-Apache_License_2.0-9cf.svg?style=flat-square)](https://github.com/barreleye/barreleye.rs)
+[![Downloads](https://img.shields.io/crates/d/barreleye-client?color=blue&style=flat-square)](https://crates.io/crates/barreleye-client)
+[![License](https://img.shields.io/badge/license-Apache_License_2.0-blue.svg?style=flat-square)](https://github.com/barreleye/barreleye.rs)
 
 ## Usage
 
