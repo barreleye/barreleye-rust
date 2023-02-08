@@ -15,7 +15,7 @@ pub type Response<T> = Result<T, Error>;
 enum Endpoint {
 	#[display(fmt = "addresses")]
 	Addresses,
-	#[display(fmt = "addresses/{}", "_0")]
+	#[display(fmt = "addresses/{_0}")]
 	Address(String),
 	#[display(fmt = "heartbeat")]
 	Heartbeat,
@@ -23,15 +23,15 @@ enum Endpoint {
 	Info,
 	#[display(fmt = "keys")]
 	Keys,
-	#[display(fmt = "keys/{}", "_0")]
+	#[display(fmt = "keys/{_0}")]
 	Key(String),
 	#[display(fmt = "labels")]
 	Labels,
-	#[display(fmt = "labels/{}", "_0")]
+	#[display(fmt = "labels/{_0}")]
 	Label(String),
 	#[display(fmt = "networks")]
 	Networks,
-	#[display(fmt = "networks/{}", "_0")]
+	#[display(fmt = "networks/{_0}")]
 	Network(String),
 	#[display(fmt = "stats")]
 	Stats,

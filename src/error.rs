@@ -16,8 +16,8 @@ impl fmt::Display for Error {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
 		match *self {
 			Error::Unavailable => write!(f, "server is unavailable"),
-			Error::Barreleye(ref err) => write!(f, "error reported by Barreleye: {}", err),
-			Error::Unexpected(ref err) => write!(f, "unexpected error: {}", err),
+			Error::Barreleye(ref err) => write!(f, "error reported by Barreleye: {err}"),
+			Error::Unexpected(ref err) => write!(f, "unexpected error: {err}"),
 		}
 	}
 }
@@ -37,7 +37,7 @@ pub struct RequestError {
 impl fmt::Display for RequestError {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
 		if let Some(ref error) = self.error {
-			write!(f, ": {}", error)?;
+			write!(f, ": {error}")?;
 		}
 
 		Ok(())
