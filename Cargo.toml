@@ -13,8 +13,8 @@ keywords = ["barreleye"]
 [dependencies]
 derive_more = "0.99.17"
 serde_json = "1.0.96"
-serde_derive = "1.0.160"
-serde = { version = "1.0.160", features = ["derive"] }
-tokio = { version = "1.28.0", features = ["full"] }
-reqwest = { version = "0.11.17", features = ["rustls-tls", "json"] }
+serde_derive = "1.0.163"
+serde = { version = "1.0.163", features = ["derive"] }
+tokio = { version = "1.28.1", features = ["full"] }
+reqwest = { version = "0.11.18", features = ["rustls-tls", "json"] }
 chrono = { version = "0.4.24", default-features = false, features = ["clock", "std", "serde"] }
